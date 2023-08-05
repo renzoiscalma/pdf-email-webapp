@@ -9,33 +9,47 @@ import Head from "next/head";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const sender = useFormInput("");
-  const recepient = useFormInput("");
-  const transaction = useFormInput("");
-  const contactAddres = useFormInput("");
-  const serviceFile = useFormInput("");
+  const caseNumber = useFormInput("");
+  const courtInformation = useFormInput("");
+  const dateOfMinting = useFormInput("");
+  const defendantNames = useFormInput("");
+  const transactionTimestamp = useFormInput("");
+  const blockchainName = useFormInput("");
+  const mintersAddr = useFormInput("");
+  const smartContractAddr = useFormInput("");
+  const serviceAddr = useFormInput("");
+  const blockNumber = useFormInput("");
+  const transactionHash = useFormInput("");
+  const mintersName = useFormInput("");
   const email = useFormInput("");
 
   const handleSubmit = async () => {
     const pdfFile = await pdf(
       generateDocument({
-        sender: sender.value,
-        recepient: recepient.value,
-        transaction: transaction.value,
-        contactAddress: contactAddres.value,
-        serviceFile: serviceFile.value,
+        caseNumber: caseNumber.value,
+        courtInformation: courtInformation.value,
+        dateOfMinting: dateOfMinting.value,
+        defendantNames: [defendantNames.value],
+        transactionTimestamp: transactionTimestamp.value,
+        blockchainName: blockchainName.value,
+        mintersAddr: mintersAddr.value,
+        smartContractAddr: smartContractAddr.value,
+        serviceAddr: serviceAddr.value,
+        blockNumber: blockNumber.value,
+        transactionHash: transactionHash.value,
+        mintersName: mintersName.value,
       })
     ).toBlob();
 
     const emailContent = {
       to: email.value,
-      subject: "BlockServe - Proof Of Service Certificate",
+      subject: "BlockServe - Proof Of Service Affidavit",
       content: "Attached to this email is the Proof of Service Certificate",
       attachments: [
         {
           content: await blobToBase64(pdfFile),
           type: "application/pdf",
-          filename: "ProofOfServiceCertificate.pdf",
+          filename: "ProofOfServiceAffidavit.pdf",
         },
       ],
     };
@@ -48,7 +62,7 @@ export default function Home() {
       body: JSON.stringify(emailContent),
     });
 
-    saveAs(pdfFile, "document.pdf");
+    saveAs(pdfFile, "ProofOfServiceAffidavit.pdf");
   };
 
   function blobToBase64(blob: Blob) {
@@ -73,19 +87,40 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <div>
-          Sender: <input type="text" {...sender} />
+          Case Number: <input type="text" {...caseNumber} />
         </div>
         <div>
-          Recepient: <input type="text" {...recepient} />
+          Court Information: <input type="text" {...courtInformation} />
         </div>
         <div>
-          Transaction: <input type="text" {...transaction} />
+          Date of Minting: <input type="text" {...dateOfMinting} />
         </div>
         <div>
-          Contact Address: <input type="text" {...contactAddres} />
+          Defendant Names: <input type="text" {...defendantNames} />
         </div>
         <div>
-          Service File: <input type="text" {...serviceFile} />
+          Transaction Timestamp: <input type="text" {...transactionTimestamp} />
+        </div>
+        <div>
+          Blockchain Name: <input type="text" {...blockchainName} />
+        </div>
+        <div>
+          Minter's Address: <input type="text" {...mintersAddr} />
+        </div>
+        <div>
+          Smart Contract Address: <input type="text" {...smartContractAddr} />
+        </div>
+        <div>
+          Service Address: <input type="text" {...serviceAddr} />
+        </div>
+        <div>
+          Block Number: <input type="text" {...blockNumber} />
+        </div>
+        <div>
+          Transaction Hash: <input type="text" {...transactionHash} />
+        </div>
+        <div>
+          Minter's Name: <input type="text" {...mintersName} />
         </div>
         <div>
           E-mail: <input type="text" {...email} />
@@ -93,6 +128,24 @@ export default function Home() {
         <div>
           <input type="button" value="download" onClick={handleSubmit} />
         </div>
+        {/* <div style={{ width: "100%", height: "1000px" }}>
+          <PDFViewer width={"100%"} height={1000}>
+            {generateDocument({
+              caseNumber: caseNumber.value,
+              courtInformation: courtInformation.value,
+              dateOfMinting: dateOfMinting.value,
+              defendantNames: [defendantNames.value],
+              transactionTimestamp: transactionTimestamp.value,
+              blockchainName: blockchainName.value,
+              mintersAddr: mintersAddr.value,
+              smartContractAddr: smartContractAddr.value,
+              serviceAddr: serviceAddr.value,
+              blockNumber: blockNumber.value,
+              transactionHash: transactionHash.value,
+              mintersName: mintersName.value,
+            })}
+          </PDFViewer>
+        </div> */}
       </main>
     </>
   );
